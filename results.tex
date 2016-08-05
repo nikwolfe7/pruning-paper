@@ -3,7 +3,7 @@
 \subsubsection{Pruning A 1-Layer Network: Single-Pass Ranking}
 We first present the results for a single-layer neural network in Figure \ref{fig:mnist-single-ranking-single-layer}, using a one-time computation of the overall ranking of all neurons to make our pruning decisions. After training, each neuron is assigned a permanent ranking based on three criteria: A brute force ``ground truth'' ranking, and two approximations of this ranking using first and second order Taylor estimations of the change in network output error resulting from the removal of each neuron. (We note that this algorithm is intentionally naive and is used for comparison only. Its performance should be expected to be poor.) 
 
-\begin{figure}
+\begin{figure}[!h]
 \centering
 \includegraphics[width=0.49\linewidth]{png/mnist-acc99-single-pass-method.pdf}
 \includegraphics[width=0.49\linewidth]{png/mnist-acc99-single-pass-accuracy.pdf}
@@ -16,7 +16,7 @@ An interesting observation here is that with only a single layer, no method for 
 \subsubsection{Pruning A 1-Layer Network: Re-Ranking After Each Removal}
 In Figure \ref{fig:mnist-re-ranking-single-layer} we present our results using an iterative re-ranking procedure in which all remaining neurons are re-ranked after each successive neuron is switched off. We compute the same brute force rankings and Taylor series approximations of error deltas over the remaining active neurons in the network after each pruning decision. This is intended to account for the effects of canceling interactions between neurons. 
 
-\begin{figure}[!htb]
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=0.49\linewidth]{png/mnist-acc99-iterative-rerank-method.pdf}
 \includegraphics[width=0.49\linewidth]{png/mnist-acc99-iterative-rerank-accuracy.pdf}
@@ -36,7 +36,7 @@ We graph the effect of boosting the neuron's output to demonstrate that for cert
 Remember that lower is better in terms of the height of the curve and minimal horizontal change between the vertical red line at 1.0 (neuron \textit{on}, $\alpha = 1.0$) and 0.0 (neuron \textit{off}, $\alpha = 0.0$) is indicative of a good candidate neuron to prune, i.e. there will be minimal effect on the network output when the neuron is removed. The network architecture in this case consisted of 1 layer, 100 neurons, 10 outputs, logistic sigmoid activations, and a starting test accuracy of 0.998.
 
 \textbf{Brute Force Method}
-\begin{figure}[!h]
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-acc99-gt-gain.pdf}
 \caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
@@ -45,7 +45,7 @@ Remember that lower is better in terms of the height of the curve and minimal ho
 tl;dr: Notice how low to the floor and flat most of these curves are. It's only until the 90th removed neuron that we see a higher cure with a more convex shape (clearly a more influential piece of the network)
 
 \textbf{1st Order Method}
-\begin{figure}[!h]
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-acc99-g1-gain.pdf}
 \caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
@@ -54,7 +54,7 @@ tl;dr: Notice how low to the floor and flat most of these curves are. It's only 
 tl;dr: Most choices seem to have flat or negatively sloped curves, indicating that the first order approx seems to be pretty good, but examining the brute force choices shows they could be better. 
 
 \textbf{2nd Order Method}
-\begin{figure}[!h]
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-acc99-g1-gain.pdf}
 \caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
@@ -65,7 +65,7 @@ tl;dr: Looks much more similar to the Brute Force method choices, though clearly
 \subsubsection{Pruning A 2-Layer Network: Single-Pass Ranking}
 Figure \ref{fig:mnist-single-ranking-double-layer} shows the result of using a one-time computation of the overall ranking of all neurons to make pruning decisions for a two-layer network. The ranking procedure is identical to the one used to generate Figure \ref{fig:mnist-single-ranking-single-layer}. (We again note that this algorithm is intentionally naive and is used for comparison only. Its performance should be expected to be poor.) 
 
-\begin{figure}
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=0.49\linewidth]{png/mnist-deep-single-pass-method.pdf}
 \includegraphics[width=0.49\linewidth]{png/mnist-deep-single-pass-accuracy.pdf}
@@ -79,7 +79,7 @@ tl;dr: Unsurprisingly, a 2-layer network is harder to prune because a single ove
 \subsubsection{Pruning A 2-Layer Network: Re-Ranking After Each Removal}
 Figure \ref{fig:mnist-re-ranking-double-layer} shows the results results using an iterative re-ranking procedure on a two-layer network. We compute the same brute force rankings and Taylor series approximations of error deltas over the remaining active neurons in the network after each pruning decision used to generate Figure \ref{fig:mnist-re-ranking-single-layer}. Again, this is intended to account for the effects of canceling interactions between neurons. 
 
-\begin{figure}
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=0.49\linewidth]{png/mnist-deep-iterative-rerank-method.pdf}
 \includegraphics[width=0.49\linewidth]{png/mnist-deep-iterative-rerank-accuracy.pdf}
@@ -95,7 +95,7 @@ tl;dr: Shows the clear potential of an ideal pruning technique, and how inconsis
 These graphs are a visualization the error surface of the network output with respect to the neurons chosen for removal using each algorithm, represented in intervals of 10 neurons. 
 
 \textbf{Brute Force Method}
-\begin{figure}
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-deep-gt-gain.pdf}
 \caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
@@ -104,7 +104,7 @@ These graphs are a visualization the error surface of the network output with re
 tl;dr: It's clear why these neurons were chosen, their graphs clearly show little change when neuron is removed, are mostly near the floor, and show convex behavior of error surface, which argues for the rationalization of using 2nd order methods to estimate difference in error when they are turned off
 
 \textbf{1st Order Method}
-\begin{figure}
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-deep-g1-gain.pdf}
 \caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
@@ -113,7 +113,7 @@ tl;dr: It's clear why these neurons were chosen, their graphs clearly show littl
  tl;dr: Drawing flat line at the point of each neurons intersection with the red vertical line (no change in gain) shows that the 1st derivative method is actually accurate for estimation of change in error in these cases, but still ultimately leads to poor decisions. 
 
 \textbf{2nd Order Method}
-\begin{figure}
+\begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-deep-g1-gain.pdf}
 \caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
