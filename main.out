@@ -1,12 +1,22 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
-\BOOKMARK [1][-]{section.2}{Experimental Results}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{MNIST Dataset Results}{section.2}% 3
-\BOOKMARK [3][-]{subsubsection.2.1.1}{Pruning A 1-Layer Network: Single-Pass Ranking}{subsection.2.1}% 4
-\BOOKMARK [3][-]{subsubsection.2.1.2}{Pruning A 1-Layer Network: Re-Ranking After Each Removal}{subsection.2.1}% 5
-\BOOKMARK [3][-]{subsubsection.2.1.3}{Visualization of Error Surface \046 Pruning Decisions}{subsection.2.1}% 6
-\BOOKMARK [3][-]{subsubsection.2.1.4}{Pruning A 2-Layer Network: Single-Pass Ranking}{subsection.2.1}% 7
-\BOOKMARK [3][-]{subsubsection.2.1.5}{Pruning A 2-Layer Network: Re-Ranking After Each Removal}{subsection.2.1}% 8
-\BOOKMARK [3][-]{subsubsection.2.1.6}{Visualization of Error Surface \046 Pruning Decisions}{subsection.2.1}% 9
-\BOOKMARK [1][-]{section.3}{Conclusions \046 Future Work}{}% 10
-\BOOKMARK [2][-]{subsection.3.1}{Conclusions}{section.3}% 11
-\BOOKMARK [2][-]{subsection.3.2}{Future Work}{section.3}% 12
+\BOOKMARK [1][-]{section.2}{Related Work}{}% 2
+\BOOKMARK [1][-]{section.3}{Methodology}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Brute Force Removal Approach}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Taylor Series Representation of Error}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Linear Approximation Approach}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Quadratic Approximation Approach}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.5}{Proposed Pruning Algorithm}{section.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Algorithm I: Single Overall Ranking}{subsection.3.5}% 9
+\BOOKMARK [3][-]{subsubsection.3.5.2}{Algorithm II: Iterative Re-Ranking}{subsection.3.5}% 10
+\BOOKMARK [1][-]{section.4}{Experimental Results}{}% 11
+\BOOKMARK [2][-]{subsection.4.1}{MNIST Dataset Results}{section.4}% 12
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Pruning A 1-Layer Network: Single-Pass Ranking}{subsection.4.1}% 13
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Pruning A 1-Layer Network: Re-Ranking After Each Removal}{subsection.4.1}% 14
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Visualization of Error Surface \046 Pruning Decisions}{subsection.4.1}% 15
+\BOOKMARK [3][-]{subsubsection.4.1.4}{Pruning A 2-Layer Network: Single-Pass Ranking}{subsection.4.1}% 16
+\BOOKMARK [3][-]{subsubsection.4.1.5}{Pruning A 2-Layer Network: Re-Ranking After Each Removal}{subsection.4.1}% 17
+\BOOKMARK [3][-]{subsubsection.4.1.6}{Visualization of Error Surface \046 Pruning Decisions}{subsection.4.1}% 18
+\BOOKMARK [1][-]{section.5}{Discussion of Results}{}% 19
+\BOOKMARK [1][-]{section.6}{Conclusions \046 Future Work}{}% 20
+\BOOKMARK [2][-]{subsection.6.1}{Conclusions}{section.6}% 21
+\BOOKMARK [2][-]{subsection.6.2}{Future Work}{section.6}% 22
