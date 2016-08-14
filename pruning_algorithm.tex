@@ -16,7 +16,7 @@ Two pruning algorithms are proposed here. They are different in the way the neur
 The first step in both the algorithms is to  decide a stopping criterion. This can vary depending on the application but some intuitive stopping criteria can be: maximum number of neurons to remove, percentage scaling needed, maximum allowable accuracy drop etc. 
 
 \subsubsection{Algorithm I: Single Overall Ranking}
-The complete algorithm is shown in Algorithm \ref{algo1}. The idea here is to generate a single ranked list based on the values of $\Delta E_{k}$. This involves a single pass of second-order back-propagation (without weight updates) to collect the gradients for each neuron. The neurons from this rank-list (with the lowest values of $\Delta E_{k}$) are then pruned according to the stopping criterion decided.
+The complete algorithm is shown in Algorithm \ref{algo1}. The idea here is to generate a single ranked list based on the values of $\Delta E_{k}$. This involves a single pass of second-order back-propagation (without weight updates) to collect the gradients for each neuron. The neurons from this rank-list (with the lowest values of $\Delta E_{k}$) are then pruned according to the stopping criterion decided. We note here that this algorithm is intentionally naive and is used for comparison only. 
 
 \begin{algorithm}
  \KwData{optimally trained network, training set}
@@ -24,7 +24,7 @@ The complete algorithm is shown in Algorithm \ref{algo1}. The idea here is to ge
  initialize and define stopping criterion \;
  perform forward propagation over the training set \;
   perform second-order back-propagation without updating weights and collect linear and quadratic gradients \;
-  rank the remaining neurons based on $\Delta E_{k}^2$\;
+  rank the remaining neurons based on $\Delta E_{k}$\;
  \While{stopping criterion is not met}{
   remove the last ranked neuron \;
  }

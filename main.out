@@ -9,14 +9,14 @@
 \BOOKMARK [3][-]{subsubsection.3.5.1}{Algorithm I: Single Overall Ranking}{subsection.3.5}% 9
 \BOOKMARK [3][-]{subsubsection.3.5.2}{Algorithm II: Iterative Re-Ranking}{subsection.3.5}% 10
 \BOOKMARK [1][-]{section.4}{Experimental Results}{}% 11
-\BOOKMARK [2][-]{subsection.4.1}{MNIST Dataset Results}{section.4}% 12
-\BOOKMARK [3][-]{subsubsection.4.1.1}{Pruning A 1-Layer Network: Single-Pass Ranking}{subsection.4.1}% 13
-\BOOKMARK [3][-]{subsubsection.4.1.2}{Pruning A 1-Layer Network: Re-Ranking After Each Removal}{subsection.4.1}% 14
+\BOOKMARK [2][-]{subsection.4.1}{Pruning a 1-Layer Network}{section.4}% 12
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Single Overall Ranking Algorithm}{subsection.4.1}% 13
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Iterative Re-Ranking Algorithm}{subsection.4.1}% 14
 \BOOKMARK [3][-]{subsubsection.4.1.3}{Visualization of Error Surface \046 Pruning Decisions}{subsection.4.1}% 15
-\BOOKMARK [3][-]{subsubsection.4.1.4}{Pruning A 2-Layer Network: Single-Pass Ranking}{subsection.4.1}% 16
-\BOOKMARK [3][-]{subsubsection.4.1.5}{Pruning A 2-Layer Network: Re-Ranking After Each Removal}{subsection.4.1}% 17
-\BOOKMARK [3][-]{subsubsection.4.1.6}{Visualization of Error Surface \046 Pruning Decisions}{subsection.4.1}% 18
-\BOOKMARK [1][-]{section.5}{Discussion of Results}{}% 19
-\BOOKMARK [1][-]{section.6}{Conclusions \046 Future Work}{}% 20
-\BOOKMARK [2][-]{subsection.6.1}{Conclusions}{section.6}% 21
-\BOOKMARK [2][-]{subsection.6.2}{Future Work}{section.6}% 22
+\BOOKMARK [2][-]{subsection.4.2}{Pruning A 2-Layer Network}{section.4}% 16
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Single Overall Ranking Algorithm}{subsection.4.2}% 17
+\BOOKMARK [3][-]{subsubsection.4.2.2}{Iterative Re-Ranking Algorithm}{subsection.4.2}% 18
+\BOOKMARK [3][-]{subsubsection.4.2.3}{Visualization of Error Surface \046 Pruning Decisions}{subsection.4.2}% 19
+\BOOKMARK [2][-]{subsection.4.3}{Some More Observations \046 Discussions}{section.4}% 20
+\BOOKMARK [1][-]{section.5}{Conclusions}{}% 21
+\BOOKMARK [1][-]{section.6}{Future Work}{}% 22

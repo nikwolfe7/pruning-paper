@@ -1,4 +1,4 @@
-\begin{thebibliography}{15}
+\begin{thebibliography}{20}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -39,11 +39,22 @@ Goodfellow, Ian~J, Warde-Farley, David, Mirza, Mehdi, Courville, Aaron, and
 \newblock Maxout networks.
 \newblock \emph{arXiv preprint arXiv:1302.4389}, 2013.
 
+\bibitem[Han et~al.(2016)Han, Mao, and Dally]{deepcompression2016}
+Han, Song, Mao, Huizi, and Dally, William~J.
+\newblock Deep compression: Compressing deep neural networks with pruning,
+  trained quantization and huffman coding.
+\newblock \emph{arXiv preprint arXiv:1510.00149v5}, 2016.
+
 \bibitem[Hassibi \& Stork(1993)Hassibi and Stork]{hassibi1993second}
 Hassibi, Babak and Stork, David~G.
 \newblock \emph{Second order derivatives for network pruning: Optimal brain
   surgeon}.
 \newblock Morgan Kaufmann, 1993.
+
+\bibitem[Hinton et~al.(2015)Hinton, Vinyals, and Dean]{darkknowledge2015}
+Hinton, Geoffrey, Vinyals, Oriol, and Dean, Jeff.
+\newblock Distilling the knowledge in a neural network.
+\newblock \emph{arXiv preprint arXiv:1503.02531}, 2015.
 
 \bibitem[Hoehfeld \& Fahlman(1992)Hoehfeld and Fahlman]{hoehfeld1992learning}
 Hoehfeld, Markus and Fahlman, Scott~E.
@@ -51,6 +62,12 @@ Hoehfeld, Markus and Fahlman, Scott~E.
   cascade-correlation algorithm.
 \newblock \emph{IEEE Transactions on Neural Networks}, 3\penalty0 (4):\penalty0
   602--611, 1992.
+
+\bibitem[LeCun \& Cortes(2010)LeCun and
+  Cortes]{lecun-mnisthandwrittendigit-2010}
+LeCun, Yann and Cortes, Corinna.
+\newblock {MNIST} handwritten digit database.
+\newblock 2010.
 
 \bibitem[LeCun et~al.(1989)LeCun, Denker, Solla, Howard, and
   Jackel]{lecun1989optimal}
@@ -73,6 +90,21 @@ Mozer, Michael~C and Smolensky, Paul.
 \newblock Using relevance to reduce network size automatically.
 \newblock \emph{Connection Science}, 1\penalty0 (1):\penalty0 3--16,
   1989{\natexlab{b}}.
+
+\bibitem[Oland \& Raj(2015)Oland and Raj]{Anders2016quant}
+Oland, Anders and Raj, Bhiksha.
+\newblock Reducing communication overhead in distributed learning by an order
+  of magnitude (almost).
+\newblock In \emph{2015 {IEEE} International Conference on Acoustics, Speech
+  and Signal Processing, {ICASSP} 2015, South Brisbane, Queensland, Australia,
+  April 19-24, 2015}, pp.\  2219--2223, 2015.
+
+\bibitem[Prabhavalkar et~al.(2016)Prabhavalkar, Alsharif, Bruguier, and
+  McGraw]{prabhavalkar2016svd}
+Prabhavalkar, Rohit, Alsharif, Ouais, Bruguier, Antoine, and McGraw, Ian.
+\newblock On the compression of recurrent neural networks with an application
+  to {LVCSR} acoustic modeling for embedded speech recognition.
+\newblock \emph{arXiv preprint arXiv:1603.08042v2}, 2016.
 
 \bibitem[Reed(1993)]{reed1993pruning}
 Reed, Russell.

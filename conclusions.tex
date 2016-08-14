@@ -1,29 +1,16 @@
-\section{Conclusions \& Future Work}
+\section{Conclusions}
+%\subsection{Conclusions}
+Pruning neurons (instead of pruning individual weights) in a pre-trained neural network without seeing a major loss in performance is not only possible but also enables compressing networks to 40-80\% of their original size, which is of great importance in constrained memory environments like embedded devices. This fact is established through the experiments using the brute force criterion, which if made computationally viable or approximated more efficiently than the Taylor Series based methods discussed in this paper, can prove to be a useful compression tool.
 
-\subsection{Conclusions}
-2nd-Order Method Consistently better than 1st-Order, but still pretty bad
-Both Methods fail miserably beyond the 1st layer in terms of classification accuracy
-For the 2-layer networks the 1st/2nd order methods do not appear to have any apparent preference for the 1st or 2nd layer in pruning decisions. 
-Brute force method pulls primarily from the outer layer at the beginning -- clearly the 1st and 2nd order methods will suffer from their difference in this regard
-Performance is worse if initial network is not trained to near-perfect accuracy, but pruning in this case typically improves MSE (not accuracy) for the first 5-10% of neurons removed
-Brute force method is surprisingly good and indicates the degree to which extra parameters are a waste
-Sum of squared errors is a decent proxy for classification accuracy, but classification accuracy is a clearer signal of performance in such problems
-If Brute Force method were made comutationally viable, could be used to prune 40-80% of neurons in almost all cases with NO re-training
-This empirically shows that the learning representation is not evenly distributed over neurons, indicating NO advantage to larger networks if unnecessary
-Confirms Mozer \& Smolensky's conclusion in 1989: Learning representation NOT distributed!
-Neurons clearly group together to cancel out each other's effects (see spikes in classification accuracy drop-off graphs), which means neural networks use a few neurons to learn the function approximation, and the rest cooperate to cancel out each other's effects!
+The experiments on the visualization of error surfaces and pruning decisions concretely establish the fact that not all neurons in a network contribute to its performance in the same way. This confirms the idea put forth by \cite{mozer1989using} that learning representation is not distributed uniformly across neurons. Neural networks use a few neurons to learn the function approximation, and the remaining neurons cooperate to cancel out each other's effects. This is also a strong indication of the fact that once training is done, bigger networks do not hold an advantage over smaller ones, which is similar to the idea put forth by \cite{darkknowledge2015} in their work on ensemble learning techniques.
 
-* second derivative method works better
-* still not very good
-* retraining is a good idea
-* speedup of brute force method
-* which layer gets pruned first
 
-\subsection{Future Work}
-Future experiments (NOT for this paper):
-Try with deeper networks (3/4/5 layers) to see if the performance degrades as we should expect
-Speed up brute force method through parallelization?
-How do results improve when we re-train after pruning 1-n neurons in a row? (expectation: smooooooooth curve for brute force method)
-Examine whether Cascade Correlation arrives at the same minimal number of neurons
-Use cross entropy to make pruning decision for classification problems
-Try a regression task on a real-world dataset, e.g. housing prices, stock market, etc. 
+\section{Future Work}
+
+Apart from some possible future experiments listed towards the end of the Experimental Results section, this paper raises some other interesting questions that can be looked into in the future.
+
+An obvious next step is to try out these experiments with deeper networks and perhaps using more error-change approximation criteria than only Taylor Series. It will also be nice to find out how this technique performs on other popular and real world datasets.
+
+The brute force method presents a great case for the reduction of a neural network's memory footprint. The only downside to this method is its computational intensity, but since for a given problem pruning will only be a one-time process, perhaps looking into speedups of the brute force method through parallelization will be a nice idea.
+
+It might also be interesting to see if the Cascade Correlation architecture arrives at the same number of final neurons as the pruning technique discussed in this paper.

@@ -1,122 +1,156 @@
 \section{Experimental Results}
-\subsection{MNIST Dataset Results}
-\subsubsection{Pruning A 1-Layer Network: Single-Pass Ranking}
-We first present the results for a single-layer neural network in Figure \ref{fig:mnist-single-ranking-single-layer}, using a one-time computation of the overall ranking of all neurons to make our pruning decisions. After training, each neuron is assigned a permanent ranking based on three criteria: A brute force ``ground truth'' ranking, and two approximations of this ranking using first and second order Taylor estimations of the change in network output error resulting from the removal of each neuron. (We note that this algorithm is intentionally naive and is used for comparison only. Its performance should be expected to be poor.) 
+For all the results presented in this section, the MNIST database of Handwritten Digits by \cite{lecun-mnisthandwrittendigit-2010} was used. It is worth noting here that since only a subset of the entire dataset was used in order to speed up experiments, the starting test accuracies reported here might differ from those reported by LeCun. This does not impact the presented results, since it's the change in the error and accuracy of the network post pruning which is of significance here and not the starting accuracy itself.
+
+\subsection{Pruning a 1-Layer Network}
+The network architecture in this case consisted of 1 layer, 100 neurons, 10 outputs, logistic sigmoid activations, and a starting test accuracy of 0.998.
+\subsubsection{Single Overall Ranking Algorithm}
+We first present the results for a single-layer neural network in Figure \ref{fig:mnist-single-ranking-single-layer}, using the Single Overall algorithm (Algorithm \ref{algo1}) as proposed in the Methodology section. (We again note that this algorithm is intentionally naive and is used for comparison only. Its performance should be expected to be poor.) After training, each neuron is assigned its permanent ranking based on the three criteria discussed previously: A brute force ``ground truth'' ranking, and two approximations of this ranking using first and second order Taylor estimations of the change in network output error resulting from the removal of each neuron. 
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.49\linewidth]{png/mnist-acc99-single-pass-method.pdf}
 \includegraphics[width=0.49\linewidth]{png/mnist-acc99-single-pass-accuracy.pdf}
-\caption{Degradation in squared error (left) and classification accuracy (right) after pruning a single-layer network trained on MNIST using a single-pass overall ranking procedure (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
+\caption{Degradation in squared error (left) and classification accuracy (right) after pruning a single-layer network using The Single Overall Ranking algorithm (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
 \label{fig:mnist-single-ranking-single-layer}
 \end{figure}
 
-An interesting observation here is that with only a single layer, no method for ranking the neurons in the network with a single pass emerges superior, indicating that the 1st and 2nd order methods are actually reasonable approximations of the brute force method under certain conditions. Of course, this method is still quite bad in terms of the rate of degradation of the classification accuracy and in practice we would likely follow \cite{mozer1989skeletonization}'s advice to retrain after each neuron removal in order to allow remaining neurons to adjust and compensate for network faults triggered by poor pruning decisions. The purpose of the present investigation, however, is to demonstrate how much of a trained network can be theoretically removed without altering the network's learned parameters in any way. Once again, we only present this method as a basis for comparison and we will investigate more promising methods in greater detail in later sections. 
+An interesting observation here is that with only a single layer, no criteria for ranking the neurons in the network (brute force or the two Taylor Series variants) using Algorithm \ref{algo1} emerges superior, indicating that the 1st and 2nd order Taylor Series methods are actually reasonable approximations of the brute force method under certain conditions. Of course, this method is still quite bad in terms of the rate of degradation of the classification accuracy and in practice we would likely follow Algorithm \ref{algo2} which is takes into account \cite{mozer1989skeletonization}'s observations stated in the Related Work section. The purpose of the present investigation, however, is to demonstrate how much of a trained network can be theoretically removed without altering the network's learned parameters in any way.
 
-\subsubsection{Pruning A 1-Layer Network: Re-Ranking After Each Removal}
-In Figure \ref{fig:mnist-re-ranking-single-layer} we present our results using an iterative re-ranking procedure in which all remaining neurons are re-ranked after each successive neuron is switched off. We compute the same brute force rankings and Taylor series approximations of error deltas over the remaining active neurons in the network after each pruning decision. This is intended to account for the effects of canceling interactions between neurons. 
+\subsubsection{Iterative Re-Ranking Algorithm}
 
 \begin{figure}[!hb]
 \centering
 \includegraphics[width=0.49\linewidth]{png/mnist-acc99-iterative-rerank-method.pdf}
 \includegraphics[width=0.49\linewidth]{png/mnist-acc99-iterative-rerank-accuracy.pdf}
-\caption{Degradation in squared error (left) and classification accuracy (right) after pruning a single-layer network trained on MNIST using an iterative re-ranking procedure (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
+\caption{Degradation in squared error (left) and classification accuracy (right) after pruning a single-layer network the Iterative Re-ranking algorithm (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
 \label{fig:mnist-re-ranking-single-layer}
 \end{figure}
 
-tl;dr: 1 layer is grrrreat for brute force! Clearly 2nd order method is consistently better than 1st order method. 
+In Figure \ref{fig:mnist-re-ranking-single-layer} we present our results using Algorithm \ref{algo2} (The Iterative Re-Ranking Algorithm) in which all remaining neurons are re-ranked after each successive neuron is switched off. We compute the same brute force rankings and Taylor series approximations of error deltas over the remaining active neurons in the network after each pruning decision. This is intended to account for the effects of cancelling interactions between neurons. 
 
-tl;dr: Brute force method is amazing here! 1 layer makes things a lot easier, and a 2nd order method can do okay as well, but can still be improved a lot. 60% of neurons doing nothing!
+There are 2 key observations here. Using the Brute Force ranking criteria, almost 60\% of the neurons in the network can be pruned away without any major loss in performance. The other noteworthy observation here is that the 2nd order Taylor Series approximation of the error performs consistently better than its 1st order version.
+
+%tl;dr: 1 layer is grrrreat for brute force! Clearly 2nd order method is consistently better than 1st order method. 
+
+%tl;dr: Brute force method is amazing here! 1 layer makes things a lot easier, and a 2nd order method can do okay as well, but can still be improved a lot. 60% of neurons doing nothing!
 
 \subsubsection{Visualization of Error Surface \& Pruning Decisions}
-As explained in the methodology section, these graphs are a visualization the error surface of the network output with respect to the neurons chosen for removal using each algorithm, represented in intervals of 10 neurons. In each graph, the error surface of the network output is displayed in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal. We create these plots during the pruning exercise by picking a neuron to switch off, and then multiplying its output by a scalar gain value $\alpha$ which is adjusted from 0.0 to 10.0 with a step size of 0.001. When the value of $\alpha$ is 1.0, this represents the unperturbed neuron output learned during training. Between 0.0 and 1.0, we are graphing the literal effect of turning the neuron off ($\alpha = 0$), and when $\alpha > 1.0$ we are simulating a boosting of the neuron's influence in the network, i.e. inflating the value of its outgoing weight parameters. 
 
-We graph the effect of boosting the neuron's output to demonstrate that for certain neurons in the network, even doubling, tripling, or quadrupling the scalar output of the neuron has no effect on the overall error of the network, indicating the remarkable degree to which the network has learned to ignore the value of certain parameters. In other cases, we can get a sense of the sensitivity of the network's output to the value of a given neuron when the curve rises steeply after the red 1.0 line. This indicates that the learned value of the parameters emanating from a given neuron are relatively important, and this is why we should ideally see sharper upticks in the curves for the later-removed neurons in the network, that is, when the neurons crucial to the learning representation start to be picked off. 
-
-Remember that lower is better in terms of the height of the curve and minimal horizontal change between the vertical red line at 1.0 (neuron \textit{on}, $\alpha = 1.0$) and 0.0 (neuron \textit{off}, $\alpha = 0.0$) is indicative of a good candidate neuron to prune, i.e. there will be minimal effect on the network output when the neuron is removed. The network architecture in this case consisted of 1 layer, 100 neurons, 10 outputs, logistic sigmoid activations, and a starting test accuracy of 0.998.
-
-\textbf{Brute Force Method}
 \begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-acc99-gt-gain.pdf}
-\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
+\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal using the brute force criterion; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
 \label{fig:mnist-gt-single-layer}
 \end{figure}
-tl;dr: Notice how low to the floor and flat most of these curves are. It's only until the 90th removed neuron that we see a higher cure with a more convex shape (clearly a more influential piece of the network)
 
-\textbf{1st Order Method}
 \begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-acc99-g1-gain.pdf}
-\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
+\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal using the 1st order Taylor Series error approximation criterion; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
 \label{fig:mnist-gt-single-layer}
 \end{figure}
-tl;dr: Most choices seem to have flat or negatively sloped curves, indicating that the first order approx seems to be pretty good, but examining the brute force choices shows they could be better. 
 
-\textbf{2nd Order Method}
 \begin{figure}[!hb]
 \centering
-\includegraphics[width=\linewidth]{png/mnist-acc99-g1-gain.pdf}
-\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
+\includegraphics[width=\linewidth]{png/mnist-acc99-g2-gain.pdf}
+\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal using the 2nd order Taylor Series error approximation criterion; (\textbf{Network:} 1 layer, 100 neurons, 10 outputs, logistic sigmoid activation, starting test accuracy: 0.998)}
 \label{fig:mnist-gt-single-layer}
 \end{figure}
-tl;dr: Looks much more similar to the Brute Force method choices, though clearly not as good (they're more spread out). Notice the difference in convexity between the 2nd and 1st order method choices. It's clear that the first order method is fitting a line and the 2nd order method is fitting a parabola in their approximation. 
 
-\subsubsection{Pruning A 2-Layer Network: Single-Pass Ranking}
-Figure \ref{fig:mnist-single-ranking-double-layer} shows the result of using a one-time computation of the overall ranking of all neurons to make pruning decisions for a two-layer network. The ranking procedure is identical to the one used to generate Figure \ref{fig:mnist-single-ranking-single-layer}. (We again note that this algorithm is intentionally naive and is used for comparison only. Its performance should be expected to be poor.) 
+As explained in the Methodology section, these graphs are a visualization of the error surface of the network output with respect to the neurons chosen for removal using each of the 3 ranking criteria, represented in intervals of 10 neurons. In each graph, the error surface of the network output is displayed in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal. We create these plots during the pruning exercise by picking a neuron to switch off, and then multiplying its output by a scalar gain value $\alpha$ which is adjusted from 0.0 to 10.0 with a step size of 0.001. When the value of $\alpha$ is 1.0, this represents the unperturbed neuron output learned during training. Between 0.0 and 1.0, we are graphing the literal effect of turning the neuron off ($\alpha = 0$), and when $\alpha > 1.0$ we are simulating a boosting of the neuron's influence in the network, i.e. inflating the value of its outgoing weight parameters. 
+
+We graph the effect of boosting the neuron's output to demonstrate that for certain neurons in the network, even doubling, tripling, or quadrupling the scalar output of the neuron has no effect on the overall error of the network, indicating the remarkable degree to which the network has learned to ignore the value of certain parameters. In other cases, we can get a sense of the sensitivity of the network's output to the value of a given neuron when the curve rises steeply after the red 1.0 line. This indicates that the learned value of the parameters emanating from a given neuron are relatively important, and this is why we should ideally see sharper upticks in the curves for the later-removed neurons in the network, that is, when the neurons crucial to the learning representation start to be picked off. 
+
+Remember that lower is better in terms of the height of the curve and minimal horizontal change between the vertical red line at 1.0 (neuron \textit{on}, $\alpha = 1.0$) and 0.0 (neuron \textit{off}, $\alpha = 0.0$) is indicative of a good candidate neuron to prune, i.e. there will be minimal effect on the network output when the neuron is removed. 
+
+Some very interesting observations can be made in each of these graphs.
+
+\textbf{Brute Force Criterion}
+
+Notice how low to the floor and flat most of these curves are. It's only until the 90th removed neuron that we see a higher cure with a more convex shape (clearly a more influential piece of the network). This again validates the fact that a good majority of the neurons in a network do not contribute to the overall performance. 
+
+\textbf{1st Order Approximation Criterion}
+
+It can be seen that most choices seem to have flat or negatively sloped curves, indicating that the first order approximation seems to be pretty good, but examining the brute force choices shows they could be better. 
+
+\textbf{2nd Order Approximation Criterion}
+
+This method looks much more similar to the Brute Force method choices, though clearly not as good (they're more spread out). Notice the difference in convexity between the 2nd and 1st order method choices. It's clear that the first order method is fitting a line and the 2nd order method is fitting a parabola in their approximation. 
+
+\subsection{Pruning A 2-Layer Network}
+The network architecture in this case consisted of 2 layers, 50 neurons per layer, 10 outputs, logistic sigmoid activations, and a starting test accuracy of 1.000.
+\subsubsection{Single Overall Ranking Algorithm}
 
 \begin{figure}[!hb]
 \centering
 \includegraphics[width=0.49\linewidth]{png/mnist-deep-single-pass-method.pdf}
 \includegraphics[width=0.49\linewidth]{png/mnist-deep-single-pass-accuracy.pdf}
-\caption{Degradation in squared error (left) and classification accuracy (right) after pruning a 2-layer network trained on MNIST using a single-pass overall ranking procedure (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
+\caption{Degradation in squared error (left) and classification accuracy (right) after pruning a 2-layer network using the Single Overall Ranking algorithm; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
 \label{fig:mnist-single-ranking-double-layer}
 \end{figure}
 
-tl;dr: Unsurprisingly, a 2-layer network is harder to prune because a single overall ranking will never capture the interdependencies between neurons in different layers. It makes sense that this is much worse than the performance on the 1-layer network, even if this method is already known to be bad, and we'd likely never use it in practice. 
+Figure \ref{fig:mnist-single-ranking-double-layer} shows the pruning results for Algorithm \ref{algo1} on a 2-layer network. The ranking procedure is identical to the one used to generate Figure \ref{fig:mnist-single-ranking-single-layer}. (We again note that this algorithm is intentionally naive and is used for comparison only. Its performance should be expected to be poor.) 
+
+Unsurprisingly, a 2-layer network is harder to prune because a single overall ranking will never capture the interdependencies between neurons in different layers. It makes sense that this is much worse than the performance on the 1-layer network, even if this method is already known to be bad, and we'd likely never use it in practice. 
 
 
-\subsubsection{Pruning A 2-Layer Network: Re-Ranking After Each Removal}
-Figure \ref{fig:mnist-re-ranking-double-layer} shows the results results using an iterative re-ranking procedure on a two-layer network. We compute the same brute force rankings and Taylor series approximations of error deltas over the remaining active neurons in the network after each pruning decision used to generate Figure \ref{fig:mnist-re-ranking-single-layer}. Again, this is intended to account for the effects of canceling interactions between neurons. 
+\subsubsection{Iterative Re-Ranking Algorithm}
 
 \begin{figure}[!hb]
 \centering
 \includegraphics[width=0.49\linewidth]{png/mnist-deep-iterative-rerank-method.pdf}
 \includegraphics[width=0.49\linewidth]{png/mnist-deep-iterative-rerank-accuracy.pdf}
-\caption{Degradation in squared error (left) and classification accuracy (right) after pruning a 2-layer network trained on MNIST using an iterative re-ranking procedure (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
+\caption{Degradation in squared error (left) and classification accuracy (right) after pruning a 2-layer network using the Iterative Re-ranking algorithm; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
 \label{fig:mnist-re-ranking-double-layer}
 \end{figure}
 
-tl;dr: clearly a higher set of curves, indicating that it becomes harder to remove neurons 1-by-1 with a deeper network (which makes sense because the neurons have more interdependencies in a deeper network), but we see an overall better performance with 2nd order method vs. 1st order, except for the first 20% of the neurons (but this doesn't seem to make much difference for classification accuracy.) 
+Figure \ref{fig:mnist-re-ranking-double-layer} shows the results from using Algorithm \ref{algo2} on a 2-layer network. We compute the same brute force rankings and Taylor series approximations of error deltas over the remaining active neurons in the network after each pruning decision used to generate Figure \ref{fig:mnist-re-ranking-single-layer}. Again, this is intended to account for the effects of cancelling interactions between neurons. 
 
-tl;dr: Shows the clear potential of an ideal pruning technique, and how inconsistent 1st and 2nd order methods can be
+It is clear that it becomes harder to remove neurons 1-by-1 with a deeper network (which makes sense because the neurons have more interdependencies in a deeper network), but we see an overall better performance with 2nd order method vs. 1st order, except for the first 20\% of the neurons (but this doesn't seem to make much difference for classification accuracy.) 
+
+Perhaps a more important observation here is that even with a more complex network, it is possible to remove up to 40\% of the neurons with no major loss in performance which is clearly illustrated by the brute force curve. This shows the clear potential of an ideal pruning technique and also shows how inconsistent 1st and 2nd order Taylor Series approximations of the error can be as ranking criteria.
 
 \subsubsection{Visualization of Error Surface \& Pruning Decisions}
-These graphs are a visualization the error surface of the network output with respect to the neurons chosen for removal using each algorithm, represented in intervals of 10 neurons. 
 
-\textbf{Brute Force Method}
 \begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-deep-gt-gain.pdf}
-\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
+\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal using the brute force criterion; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
 \label{fig:mnist-gt-double-layer}
 \end{figure}
-tl;dr: It's clear why these neurons were chosen, their graphs clearly show little change when neuron is removed, are mostly near the floor, and show convex behavior of error surface, which argues for the rationalization of using 2nd order methods to estimate difference in error when they are turned off
 
-\textbf{1st Order Method}
 \begin{figure}[!hb]
 \centering
 \includegraphics[width=\linewidth]{png/mnist-deep-g1-gain.pdf}
-\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
+\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal using the 1st order Taylor Series error approximation criterion; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
 \label{fig:mnist-g1-double-layer}
 \end{figure}
- tl;dr: Drawing flat line at the point of each neurons intersection with the red vertical line (no change in gain) shows that the 1st derivative method is actually accurate for estimation of change in error in these cases, but still ultimately leads to poor decisions. 
 
-\textbf{2nd Order Method}
 \begin{figure}[!hb]
 \centering
-\includegraphics[width=\linewidth]{png/mnist-deep-g1-gain.pdf}
-\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
+\includegraphics[width=\linewidth]{png/mnist-deep-g2-gain.pdf}
+\caption{Error surface of the network output in log space (left) and in real space (right) with respect to each candidate neuron chosen for removal using the 2nd order Taylor Series error approximation criterion; (\textbf{Network:} 2 layers, 50 neurons/layer, 10 outputs, logistic sigmoid activation, starting test accuracy: 1.000)}
 \label{fig:mnist-g2-double-layer}
 \end{figure}
-tl;dr: Clearly these are not overtly poor candidates for removal (error doesn't change much between 1.0 \& zero-crossing left-hand-side), but could be better (see brute force)
+
+As seen in the case of a single layered network, these graphs are a visualization the error surface of the network output with respect to the neurons chosen for removal using each algorithm, represented in intervals of 10 neurons. 
+
+\textbf{Brute Force Criterion}
+
+It is clear why these neurons got chosen, their graphs clearly show little change when neuron is removed, are mostly near the floor, and show convex behaviour of error surface, which argues for the rationalization of using 2nd order methods to estimate difference in error when they are turned off.
+
+\textbf{1st Order Approximation Criterion}
+
+Drawing a flat line at the point of each neurons intersection with the red vertical line (no change in gain) shows that the 1st derivative method is actually accurate for estimation of change in error in these cases, but still ultimately leads to poor decisions. 
+
+\textbf{2nd Order Approximation Criterion}
+
+Clearly these neurons are not overtly poor candidates for removal (error doesn't change much between 1.0 \& zero-crossing left-hand-side), but could be better (as described above in the Brute Force Criterion discussion).
+
+\subsection{Some More Observations \& Discussions}
+
+As can be seen from the experiments, even though the 2nd-Order approximation criterion is consistently better than 1st-Order, it's performance is not nearly as good as brute force based ranking, especially beyond the first layer. This warrants the need to look into other ways of error-change approximation in the future as the results from the brute force ranking above are very promising. 
+
+It was also observed that the brute force method primarily prunes neurons from the outer layer initially, which suggests that it might be a good idea to look into pruning neurons based on the layer they belong to.
+
+From some other experiments conducted on smaller toy datasets, it was noted that the pruning performance is worse if the models are not trained to a high accuracy, which is quite expected since this simply means that in these cases all the neurons have significant contribution to the network's performance and hence there is still scope for a better accuracy given more neurons and/or increased training times. However, pruning in these cases typically improved the MSE for the first 5 to 10 \% of neurons removed which can again be attributed to the theory put forward by \cite{mozer1989using}.
